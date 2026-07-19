@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attendance System Step 1</title>
+</head>
+<body>
+<h1>Attendance System</h1>
+<form id="attendanceForm">
+<input type="text" id="studentName" placeholder="Student Name" required><br><br>
+<input type="text" id="studentNumber" placeholder="Student Number" required><br><br>
+<select id="section" required>
+<option value="">Select Section</option>
+<option value="Sampaguita">Sampaguita</option>
+<option value="Camia">Camia</option>
+<option value="Cattleya">Cattleya</option>
+</select><br><br>
+<button type="submit">Check In</button>
+</form>
+<p id="message"></p>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const firebaseConfig = {
+ apiKey: "AIzaSyB1z1ARyeWhRkBQiMndl6JtcuxnQx5pNik",
+ authDomain: "attendance-9df7c.firebaseapp.com",
+ projectId: "attendance-9df7c",
+ storageBucket: "attendance-9df7c.firebasestorage.app",
+ messagingSenderId: "846102407015",
+ appId: "1:846102407015:web:2583a70c130ea2c9f5b1c2",
+ measurementId: "G-43PP07XP6N"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+attendanceForm.addEventListener("submit", async (e)=>{
+ e.preventDefault();
+ await addDoc(collection(db,"attendance"),{
+  name: studentName.value,
+  studentNumber: studentNumber.value,
+  section: section.value,
+  timestamp: new Date()
+ });
+ message.textContent = "Attendance recorded!";
+ attendanceForm.reset();
+});
+</script>
+</body>
+</html>
